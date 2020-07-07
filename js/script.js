@@ -54,8 +54,6 @@ $(document).ready(function() {
 // funzione con metodo GET, 
 // --> all'avvio scarica i dati dal server e li stampa in un UL
 function ottieniDato() {
-
-   
     $('#stampa-lista').html('');
 
     // chiamata ajax di test con metodo GET
