@@ -17,13 +17,15 @@ $(document).ready(function() {
     // creo evento click
     $(document).on('click', '#btn', function() {
         
+        
         inserisciDato();
-        ottieniDato();
 
-
+        
 
     }); // fine evento click
 
+    ottieniDato();
+    
 }); // end document ready
 
 
@@ -39,41 +41,70 @@ function ottieniDato() {
         method: 'GET',
 
         success: function(data) {
+            
             console.log(data);
+
+            // handlebars
+            var source = $('#lista-template').html();
+            var template = Handlebars.compile(source);
+
+            for (var i = 0; i < data.length; i++) {
+
+                var listaProvvisoria = data[i];
+
+                console.log(listaProvvisoria);
+                var html = template(listaProvvisoria);
+
+                $('#stampa-lista').append(html);
+            }
         },
 
         error: function() {
             alert('qualcosa non va!');
         }
-    }) 
-}   // fine funzione creadato
+    });
+}   // fine funzione ottienidato
 
 
-function inserisciDato(valoreDaImmettere) {
+// function inserisciDato(valoreDaImmettere) {
 
-    // vado a leggere il valore immesso nel campo input
-    var testoImmesso = $('#input-text').val();
+//     // vado a leggere il valore immesso nel campo input
+//     var valoreDaImmettere = $('#input-text').val();
 
-    console.log(testoImmesso);
+//     console.log(valoreDaImmettere);
 
-    // chiamata ajax di test con metodo GET
-    $.ajax( // oggetto interno a chiamata ajax
-        {
+//     // chiamata ajax di test con metodo GET
+//     $.ajax( // oggetto interno a chiamata ajax
+//         {
         
-        url: 'http://157.230.17.132:3034/todos/',
+//         url: 'http://157.230.17.132:3034/todos/',
 
-        method: 'POST',
+//         method: 'POST',
         
-        data: {
-            text: 'test che avrà valore id 6'
-        },
+//         data: {
+//             text: valoreDaImmettere
+//         },
 
-        success: function(data) {
-            $('#stampa-lista').html(data);
-        },
+//         success: function(data) {
 
-        error: function() {
-            alert('qualcosa non va!');
-        }
-    }) 
-}   // fine funzione inserisciDato
+//                 console.log(data);
+            
+//                 var source = $('#lista-template').html();
+//                 var template = Handlebars.compile(source);  
+
+//                 var context = {
+//                     text: valoreDaImmettere
+//                 };
+
+//                 var html = template(context);
+
+//                 $('#stampa-lista').append(html);
+
+
+//         },
+
+//         error: function() {
+//             alert('qualcosa non va!');
+//         }
+//     }); 
+// }   // fine funzione inserisciDato

@@ -21,16 +21,16 @@
     </div>
 
     <!-- la ul da stampare -->
-    <ul class="stampa-lista">
+    <ul id="stampa-lista">
 
     </ul>
 
 
     <!-- template handlebars -->
-    <script id="template" type="text/x-handlebars-template">
+    <script id="lista-template" type="text/x-handlebars-template">
 
+        <li data-todo="{{ id }}"> {{ text }} </li>
 
-        
     </script>
     <!-- fine handlebars -->
 

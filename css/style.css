@@ -5,10 +5,13 @@
 }
 
 .wrapper {
-    width: 400px;
-    margin: 50px auto;
+    margin: 30px;
 }
 
 input, button {
     padding: 10px;
+}
+
+ul {
+    margin: 0 0 0 50px;
 }
