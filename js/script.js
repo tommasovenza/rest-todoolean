@@ -13,24 +13,50 @@
 // mia porta 3034
 
 $(document).ready(function() {
-
+    ottieniDato();
     // creo evento click
     $(document).on('click', '#btn', function() {
-        
-        
+   
         inserisciDato();
-
-        
 
     }); // fine evento click
 
-    ottieniDato();
+
+    $(document).on('click', '.btn-elimina', function() {
+        
+        
+        var thisId = $(this).parent().attr('data-todo');
+        
+        $.ajax( {
+
+            url: 'http://157.230.17.132:3034/todos/' + thisId,
+
+            method: 'DELETE',
+
+            success: function(data) {
+                ottieniDato();
+            },
+
+            error: function() {
+                alert('non va');
+            }
+
+        });
+
+
+    }); // fine evento click
+
+    
     
 }); // end document ready
 
 
-
+// funzione con metodo GET, 
+// --> all'avvio scarica i dati dal server e li stampa in un UL
 function ottieniDato() {
+
+   
+    $('#stampa-lista').html('');
 
     // chiamata ajax di test con metodo GET
     $.ajax( // oggetto interno a chiamata ajax
@@ -42,7 +68,7 @@ function ottieniDato() {
 
         success: function(data) {
             
-            console.log(data);
+            // console.log(data);
 
             // handlebars
             var source = $('#lista-template').html();
@@ -63,48 +89,53 @@ function ottieniDato() {
             alert('qualcosa non va!');
         }
     });
+
 }   // fine funzione ottienidato
 
+// funzione con metodo POST che aggiunge dati sul server
+function inserisciDato(valoreDaImmettere) {
 
-// function inserisciDato(valoreDaImmettere) {
+    // vado a leggere il valore immesso nel campo input
+    var valoreDaImmettere = $('#input-text').val();
 
-//     // vado a leggere il valore immesso nel campo input
-//     var valoreDaImmettere = $('#input-text').val();
+    console.log(valoreDaImmettere);
 
-//     console.log(valoreDaImmettere);
-
-//     // chiamata ajax di test con metodo GET
-//     $.ajax( // oggetto interno a chiamata ajax
-//         {
+    // chiamata ajax di test con metodo GET
+    $.ajax( // oggetto interno a chiamata ajax
+        {
         
-//         url: 'http://157.230.17.132:3034/todos/',
+        url: 'http://157.230.17.132:3034/todos/',
 
-//         method: 'POST',
+        method: 'POST',
         
-//         data: {
-//             text: valoreDaImmettere
-//         },
+        data: {
+            text: valoreDaImmettere
+        },
 
-//         success: function(data) {
+        success: function(data) {
 
-//                 console.log(data);
+                console.log(data);
             
-//                 var source = $('#lista-template').html();
-//                 var template = Handlebars.compile(source);  
+                var source = $('#lista-template').html();
+                var template = Handlebars.compile(source);  
 
-//                 var context = {
-//                     text: valoreDaImmettere
-//                 };
+                var context = {
+                    text: valoreDaImmettere
+                };
 
-//                 var html = template(context);
+                var html = template(context);
 
-//                 $('#stampa-lista').append(html);
+                $('#stampa-lista').append(html);
 
 
-//         },
+        },
 
-//         error: function() {
-//             alert('qualcosa non va!');
-//         }
-//     }); 
-// }   // fine funzione inserisciDato
+        error: function() {
+            alert('qualcosa non va!');
+        }
+    }); 
+}   // fine funzione inserisciDato
+
+
+// funzione che elimina elementi della lista al click 
+
