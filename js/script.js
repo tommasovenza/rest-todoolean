@@ -1,44 +1,32 @@
-// Utilizzando le API Todos di Boolean creiamo un’interfaccia in cui possiamo leggere, creare e rimuovere degli elementi da una todo-list
-// Endpoints:
-// Read: http://157.230.17.132:{porta}/todos/ Method:GET
-// Create: http://157.230.17.132:{porta}/todos/ Method: POST
-// Che si aspetta il testo da salvare (nome proprietà ‘text’)
-// Delete: http://157.230.17.132:{porta}/todos/{id} Method: DELETE
-// Dove id è l’id della risorsa da eliminare
-// Ognuno di voi ha un porta assegnata da includere nell’url, questo è il documento con le porte.
-// https://docs.google.com/spreadsheets/d/1_Yo6HzbTmZ8NXJtkR4VJ4CetEyxT5ShmH-SWjGzXsaA/edit#gid=0
-// Accanto al vostro nome trovate la porta che dovrete utilizzare.
-// Buon lavoro!
+$(document).ready(function () {
 
-// mia porta 3034
-
-$(document).ready(function() {
     ottieniDato();
+
     // creo evento click
-    $(document).on('click', '#btn', function() {
-   
+    $(document).on('click', '#btn', function () {
+
         inserisciDato();
 
     }); // fine evento click
 
+    // funzione che elimina elementi della lista al click 
+    $(document).on('click', '.btn-elimina', function () {
 
-    $(document).on('click', '.btn-elimina', function() {
-        
-        
-        var thisId = $(this).parent().attr('data-todo');
-        
-        $.ajax( {
 
-            url: 'http://157.230.17.132:3034/todos/' + thisId,
+        var questoId = $(this).parent().attr('data-todo');
+
+        $.ajax({
+
+            url: 'http://157.230.17.132:3034/todos/' + questoId,
 
             method: 'DELETE',
 
-            success: function(data) {
+            success: function (data) {
                 ottieniDato();
             },
 
-            error: function() {
-                alert('non va');
+            error: function () {
+                alert('qualcosa non va');
             }
 
         });
@@ -46,94 +34,92 @@ $(document).ready(function() {
 
     }); // fine evento click
 
-    
-    
+
+
 }); // end document ready
 
 
 // funzione con metodo GET, 
 // --> all'avvio scarica i dati dal server e li stampa in un UL
 function ottieniDato() {
+
+    // reset della funzione
     $('#stampa-lista').html('');
 
     // chiamata ajax di test con metodo GET
-    $.ajax( // oggetto interno a chiamata ajax
-        {
-        
+    $.ajax({
+
         url: 'http://157.230.17.132:3034/todos/',
 
         method: 'GET',
 
-        success: function(data) {
-            
-            // console.log(data);
+        success: function (data) {
+
+            console.log(data);
 
             // handlebars
             var source = $('#lista-template').html();
             var template = Handlebars.compile(source);
 
+            // ciclo for per stampare gli elementi che torna l'API
             for (var i = 0; i < data.length; i++) {
 
-                var listaProvvisoria = data[i];
+                var elementoListaCorrente = data[i];
 
-                console.log(listaProvvisoria);
-                var html = template(listaProvvisoria);
+                console.log(elementoListaCorrente)
+
+                var html = template(elementoListaCorrente);
 
                 $('#stampa-lista').append(html);
             }
         },
 
-        error: function() {
+        error: function () {
             alert('qualcosa non va!');
         }
     });
 
-}   // fine funzione ottienidato
+} // fine funzione ottieniDato
 
 // funzione con metodo POST che aggiunge dati sul server
 function inserisciDato(valoreDaImmettere) {
+
 
     // vado a leggere il valore immesso nel campo input
     var valoreDaImmettere = $('#input-text').val();
 
     console.log(valoreDaImmettere);
 
-    // chiamata ajax di test con metodo GET
-    $.ajax( // oggetto interno a chiamata ajax
-        {
-        
-        url: 'http://157.230.17.132:3034/todos/',
+    if (valoreDaImmettere != '') {
 
-        method: 'POST',
-        
-        data: {
-            text: valoreDaImmettere
-        },
+        // chiamata ajax di test con metodo GET
+        $.ajax( // oggetto interno a chiamata ajax
+            {
 
-        success: function(data) {
+                url: 'http://157.230.17.132:3034/todos/',
 
-                console.log(data);
-            
-                var source = $('#lista-template').html();
-                var template = Handlebars.compile(source);  
+                method: 'POST',
 
-                var context = {
+                data: {
                     text: valoreDaImmettere
-                };
+                },
 
-                var html = template(context);
+                success: function (data) {
 
-                $('#stampa-lista').append(html);
+                    ottieniDato();
 
+                },
 
-        },
-
-        error: function() {
-            alert('qualcosa non va!');
-        }
-    }); 
-}   // fine funzione inserisciDato
+                error: function () {
+                    alert('non ho salvato il nuovo elemento');
+                }
+            });
 
 
-// funzione che elimina elementi della lista al click 
+    }   else {
+        
+        alert('stringa vuota, immetti un valore');
+    }
 
+
+} // fine funzione inserisciDato
