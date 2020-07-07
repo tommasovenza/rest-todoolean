@@ -12,3 +12,39 @@
 
 // mia porta 3034
 
+$(document).ready(function() {
+
+    // creo evento click
+    $(document).on('click', '#btn', function() {
+        
+        creaDato();
+
+
+
+    }); // fine evento click
+
+}); // end document ready
+
+
+
+function creaDato(valoreImmesso) {
+
+    // vado a leggere il valore immesso nel campo input
+    var testoImmesso = $('#input-text').val();
+
+    $.ajax({
+        url: 'http://157.230.17.132:3034/todos/',
+        method: 'GET',
+
+        success: function(data) {
+            console.log(data);
+        },
+
+        error: function() {
+            alert('qualcosa non va!');
+        }
+    }) 
+
+    
+
+}

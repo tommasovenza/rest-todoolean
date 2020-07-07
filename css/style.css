@@ -4,3 +4,11 @@
     box-sizing: border-box;
 }
 
+.wrapper {
+    width: 400px;
+    margin: 50px auto;
+}
+
+input, button {
+    padding: 10px;
+}
