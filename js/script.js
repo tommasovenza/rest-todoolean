@@ -17,7 +17,8 @@ $(document).ready(function() {
     // creo evento click
     $(document).on('click', '#btn', function() {
         
-        creaDato();
+        inserisciDato();
+        ottieniDato();
 
 
 
@@ -27,13 +28,14 @@ $(document).ready(function() {
 
 
 
-function creaDato(valoreImmesso) {
+function ottieniDato() {
 
-    // vado a leggere il valore immesso nel campo input
-    var testoImmesso = $('#input-text').val();
-
-    $.ajax({
+    // chiamata ajax di test con metodo GET
+    $.ajax( // oggetto interno a chiamata ajax
+        {
+        
         url: 'http://157.230.17.132:3034/todos/',
+
         method: 'GET',
 
         success: function(data) {
@@ -44,7 +46,34 @@ function creaDato(valoreImmesso) {
             alert('qualcosa non va!');
         }
     }) 
+}   // fine funzione creadato
 
-    
 
-}
+function inserisciDato(valoreDaImmettere) {
+
+    // vado a leggere il valore immesso nel campo input
+    var testoImmesso = $('#input-text').val();
+
+    console.log(testoImmesso);
+
+    // chiamata ajax di test con metodo GET
+    $.ajax( // oggetto interno a chiamata ajax
+        {
+        
+        url: 'http://157.230.17.132:3034/todos/',
+
+        method: 'POST',
+        
+        data: {
+            text: 'test che avrà valore id 6'
+        },
+
+        success: function(data) {
+            $('#stampa-lista').html(data);
+        },
+
+        error: function() {
+            alert('qualcosa non va!');
+        }
+    }) 
+}   // fine funzione inserisciDato
